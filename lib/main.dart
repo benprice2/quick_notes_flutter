@@ -54,6 +54,11 @@ class _NotesHomePageState extends State<NotesHomePage> {
   final FocusNode _titleFocus = FocusNode();
   final FocusNode _descriptionFocus = FocusNode();
 
+  // Format the date time for display
+  String _formatDateTime(DateTime dateTime) {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+  }
+
   // Add a new note to the list
   void _addNote() {
     // Validate that title is not empty
@@ -172,14 +177,55 @@ class _NotesHomePageState extends State<NotesHomePage> {
             
             const SizedBox(height: 8),
             
-            // Placeholder for notes list (will be implemented in next stages)
+            // Notes list
             Expanded(
-              child: Center(
-                child: Text(
-                  'No notes yet. Add your first note above!',
-                  style: TextStyle(color: Colors.grey.shade600),
-                ),
-              ),
+              child: _notes.isEmpty
+                ? Center(
+                    child: Text(
+                      'No notes yet. Add your first note above!',
+                      style: TextStyle(color: Colors.grey.shade600),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: _notes.length,
+                    itemBuilder: (context, index) {
+                      final note = _notes[index];
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        elevation: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Note title
+                              Text(
+                                note.title,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              if (note.description != null && note.description!.isNotEmpty) ...[  
+                                const SizedBox(height: 8),
+                                // Note description
+                                Text(note.description!),
+                              ],
+                              const SizedBox(height: 8),
+                              // Note timestamp
+                              Text(
+                                _formatDateTime(note.createdAt),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
             ),
           ],
         ),
