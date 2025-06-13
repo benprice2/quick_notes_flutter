@@ -56,6 +56,18 @@ class _NotesHomePageState extends State<NotesHomePage> {
   final FocusNode _descriptionFocus = FocusNode();
 
 
+  // Delete a note from the list
+  void _deleteNote(String id) {
+    setState(() {
+      _notes.removeWhere((note) => note.id == id);
+    });
+    
+    // Show confirmation
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Note deleted')),
+    );
+  }
+
   // Add a new note to the list
   void _addNote() {
     // Validate that title is not empty
@@ -187,9 +199,25 @@ class _NotesHomePageState extends State<NotesHomePage> {
                     itemCount: _notes.length,
                     itemBuilder: (context, index) {
                       final note = _notes[index];
-                      return NoteCard(
-                        note: note,
-                        onDelete: null, // We'll implement delete functionality in the next stage
+                      return Dismissible(
+                        key: Key(note.id),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20.0),
+                          color: Colors.red,
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                        onDismissed: (direction) {
+                          _deleteNote(note.id);
+                        },
+                        child: NoteCard(
+                          note: note,
+                          onDelete: () => _deleteNote(note.id),
+                        ),
                       );
                     },
                   ),
