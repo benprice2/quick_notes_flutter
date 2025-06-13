@@ -195,8 +195,8 @@ class _NotesHomePageState extends State<NotesHomePage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             // Note input section
             Card(
               elevation: 3,
@@ -304,6 +304,6 @@ class _NotesHomePageState extends State<NotesHomePage> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
