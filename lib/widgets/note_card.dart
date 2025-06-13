@@ -20,29 +20,38 @@ class NoteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      elevation: 1,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Note title and content
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Note title
-                      Text(
-                        note.title,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Note title and content
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Note title
+                        Text(
+                          note.title,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.3,
+                          ),
                         ),
-                      ),
-                      if (note.description != null && note.description!.isNotEmpty) ...[
+                        if (note.description != null && note.description!.isNotEmpty) ...[
                         const SizedBox(height: 8),
                         // Note description
                         Text(note.description!),
@@ -53,23 +62,40 @@ class NoteCard extends StatelessWidget {
                 
                 // Delete button
                 if (onDelete != null)
-                  IconButton(
-                    icon: const Icon(Icons.delete_outline, color: Colors.red),
-                    onPressed: onDelete,
-                    tooltip: 'Delete note',
+                  Container(
+                    margin: const EdgeInsets.only(left: 8),
+                    child: IconButton(
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: onDelete,
+                      tooltip: 'Delete note',
+                      style: IconButton.styleFrom(
+                        foregroundColor: Colors.red.shade400,
+                        backgroundColor: Colors.red.shade50,
+                      ),
+                    ),
                   ),
               ],
             ),
             const SizedBox(height: 8),
             // Note timestamp
-            Text(
-              _formatDateTime(note.createdAt),
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey.shade600,
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                _formatDateTime(note.createdAt),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey.shade700,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ],
+        ),
         ),
       ),
     );
